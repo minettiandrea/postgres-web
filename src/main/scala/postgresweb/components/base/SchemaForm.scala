@@ -5,7 +5,7 @@ import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
 import postgresweb.components.base.form.Input
 import postgresweb.css.CommonStyles
-import postgresweb.models.JSONSchema
+import postgresweb.models.{JSONSchemaUI, JSONSchema}
 
 import scala.scalajs.js.{Any, UndefOr}
 import scalacss.Defaults._
@@ -31,13 +31,13 @@ object SchemaForm {
 
   }
 
-  case class Props(schema:JSONSchema)
+  case class Props(schema:JSONSchema, ui:JSONSchemaUI)
 
 
   val component = ReactComponentB[Props]("SchemaForm")
     .render_P { P =>
       <.div(CommonStyles.card,
-        SchemaFormNative(P.schema)(
+        SchemaFormNative(P.schema,Some(P.ui))(
           <.div(Style.action,
             <.button(Style.button,^.`type` := "submit","Submit")
           )

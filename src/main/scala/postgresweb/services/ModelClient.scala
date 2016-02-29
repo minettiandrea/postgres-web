@@ -43,10 +43,9 @@ class ModelClient(model:String) {
 
     def filter2table(filter: JSONQuery): Future[Table] = {
 
-      def valueForKey(key:Option[String], map: Map[String,Json]):String = {
+      def valueForKey(key:String, map: Map[String,Json]):String = {
         for{
-          k <- key
-          result <- map.lift(k).map { el =>
+          result <- map.lift(key).map { el =>
             (el.asNumber,el.asString) match {
               case (Some(n),_) => n.toString
               case (_,Some(s)) => s
@@ -60,7 +59,7 @@ class ModelClient(model:String) {
         f <- form
         result <- list(filter)
       } yield {
-        val headers = f.map(_.key.getOrElse("No title"))
+        val headers = f.map(_.key)
         val rows =
           result.data.map { row =>
             f.map { field =>

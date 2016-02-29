@@ -6,7 +6,7 @@ import io.circe.parser._
 import io.circe.syntax._
 import io.circe.scalajs._
 import japgolly.scalajs.react.{React, ReactComponentU_, ReactElement, ReactNode}
-import postgresweb.models.JSONSchema
+import postgresweb.models.{JSONSchemaUI, JSONSchema}
 
 import scala.scalajs._
 
@@ -31,42 +31,42 @@ trait UiSchemaProps extends js.Object{
 }
 
 
-case class UiFileds(widget:(UiSchemaProps => ReactElement))
-case class UiSchema(fields:Map[String,UiFileds])
+//case class UiFileds(widget:(UiSchemaProps => ReactElement))
+//case class UiSchema(fields:Map[String,UiFileds])
 
 
 case class SchemaFormNative(
-    schema:JSONSchema,
-    uiSchema:Option[UiSchema] = None,
-    formData:Option[js.Any] = None,
-    onChange:Option[() => Unit] = None,
-    onError:Option[() => Unit] = None,
-    onSubmit:Option[() => Unit] = None,
-    schemaField:Option[() => Unit] = None,
-    titleField:Option[() => Unit] = None
+                             schema:JSONSchema,
+                             uiSchema:Option[JSONSchemaUI] = None,
+                             formData:Option[js.Any] = None,
+                             onChange:Option[() => Unit] = None,
+                             onError:Option[() => Unit] = None,
+                             onSubmit:Option[() => Unit] = None,
+                             schemaField:Option[() => Unit] = None,
+                             titleField:Option[() => Unit] = None
   )  {
 
 
 
-  def uiSchemaToNative(ui:UiSchema):js.Any = {
-
-
-    def addField(field:UiFileds) = {
-      val uiField  = js.Dynamic.literal()
-      uiField.updateDynamic("ui:widget")(field.widget)
-      //uiField.updateDynamic("ui:widget")("textarea")
-      uiField
-    }
-
-    val uiSchema  = js.Dynamic.literal()
-    for((n,f) <- ui.fields) uiSchema.updateDynamic(n)(addField(f))
-    uiSchema
-  }
+//  def uiSchemaToNative(ui:UiSchema):js.Any = {
+//
+//
+//    def addField(field:UiFileds) = {
+//      val uiField  = js.Dynamic.literal()
+//      uiField.updateDynamic("ui:widget")(field.widget)
+//      //uiField.updateDynamic("ui:widget")("textarea")
+//      uiField
+//    }
+//
+//    val uiSchema  = js.Dynamic.literal()
+//    for((n,f) <- ui.fields) uiSchema.updateDynamic(n)(addField(f))
+//    uiSchema
+//  }
 
    def apply(childs: ReactNode*) = {
     val p = js.Dynamic.literal()
       p.updateDynamic("schema")(schema.asJsAny)
-      uiSchema.foreach(ui => p.updateDynamic("uiSchema")(uiSchemaToNative(ui)))
+      uiSchema.foreach(ui => p.updateDynamic("uiSchema")(ui.asJsAny))
       formData.foreach(fd => p.updateDynamic("formData")(fd))
       onChange.foreach(oc => p.updateDynamic("onChange")(oc))
       onError.foreach(oe => p.updateDynamic("onError")(oe))

@@ -8,7 +8,7 @@ case class TitleMap(value:String,name:String)
 
 case class JSONField(
                       `type`:String,
-                      key:Option[String] = None,
+                      key:String,
                       title:Option[String] = None,
                       titleMap:Option[List[TitleMap]] = None,
                       options:Option[JSONFieldOptions] = None,
