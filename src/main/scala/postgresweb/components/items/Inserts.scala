@@ -11,31 +11,26 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
 
-case class Tables(model:String) {
+case class Inserts(model:String) {
 
 
-  case class State(table:Table)
+  case class State(schema:JSONSchema)
 
   class Backend(scope:BackendScope[Unit,State]) {
 
 
 
-      val client = ModelClient(model)
-
-      client.Helpers.filter2table(JSONQuery.baseFilter).onComplete{
-        case Success(table) => scope.modState( _.copy(table = table)).runNow()
-        case Failure(f) => {
-          f.printStackTrace()
-          println("Something went wrong: " + f)
-        }
-      }
+    val client = ModelClient(model)
 
 
+    client.schema.foreach{ schema =>
+      scope.modState(_.copy(schema = schema)).runNow()
+    }
 
 
     def render(s:State) = {
       <.div(CommonStyles.row,
-        <.div(CommonStyles.fullWidth,TableComponent(TableComponent.Props(s.table,1)))
+        <.div(CommonStyles.fullWidth,SchemaForm(SchemaForm.Props(s.schema)))
       )
     }
   }
@@ -43,7 +38,7 @@ case class Tables(model:String) {
 
 
   val component = ReactComponentB[Unit]("ItemsInfo")
-    .initialState(State(Table.empty))
+    .initialState(State(JSONSchema.empty))
     .renderBackend[Backend]
     .buildU
 

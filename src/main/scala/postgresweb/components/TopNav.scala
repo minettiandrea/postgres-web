@@ -39,6 +39,11 @@ object TopNav {
   implicit val propsReuse = Reusability.by((_: Props).selectedPage)
 
 
+  def menuClick(item:Item,ctrl:RouterCtl[Item]) = for{
+    _ <- Callback.log("menuClick")
+    cb <- ctrl.set(item)
+  } yield cb
+
   //inizializzazione del componente
   val component = ReactComponentB[Props]("TopNav")
     .render_P { P =>
@@ -47,7 +52,7 @@ object TopNav {
           <.div(CommonStyles.title, "PostgresRest UI")
         ),
         <.div(Style.tabs,
-          P.menus.map(item => <.a(Style.tab(item == P.selectedPage), item.title, P.ctrl setOnClick item ))
+          P.menus.map(item => <.a(Style.tab(item == P.selectedPage), item.title, ^.onClick --> menuClick(item,P.ctrl) ))
         )
       )
     }

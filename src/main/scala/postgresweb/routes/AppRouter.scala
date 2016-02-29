@@ -19,7 +19,7 @@ object AppRouter {
 
     (trimSlashes
       | itemRoutes
-      ).notFound(redirectToPage(Items(Item.Item1))(Redirect.Replace))
+      ).notFound(redirectToPage(Items(Item.Home))(Redirect.Replace))
       .renderWith(layout)
   }
 
