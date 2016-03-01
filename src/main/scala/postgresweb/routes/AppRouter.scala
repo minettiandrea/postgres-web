@@ -9,17 +9,17 @@ object AppRouter {
 
   sealed trait AppPage
 
-  case class Items(p : Item) extends AppPage
+  case class Items(p : FormContainer) extends AppPage
 
 
   val config = RouterConfigDsl[AppPage].buildConfig { dsl =>
     import dsl._
 
-    val itemRoutes : Rule = Item.routes.prefixPath_/("#items").pmap[AppPage](Items){ case Items(p) => p}
+    val itemRoutes : Rule = FormContainer.routes.prefixPath_/("#").pmap[AppPage](Items){ case Items(p) => p}
 
     (trimSlashes
       | itemRoutes
-      ).notFound(redirectToPage(Items(Item.Home))(Redirect.Replace))
+      ).notFound(redirectToPage(Items(FormContainer.Home))(Redirect.Replace))
       .renderWith(layout)
   }
 

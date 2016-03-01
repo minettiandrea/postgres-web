@@ -16,8 +16,8 @@ object Path {
     def form = Config.endpoint + model + "/form"
     def keys = Config.endpoint + model + "/keys"
     def count = Config.endpoint + model + "/count"
-    def get(i:Int) = Config.endpoint + model + "/" + i
-    def update(i:Int) = Config.endpoint + model + "/" + i
+    def get(i:String) = Config.endpoint + model + "/" + i
+    def update(i:String) = Config.endpoint + model + "/" + i
     def insert = Config.endpoint + model
     def firsts = Config.endpoint + model
   }

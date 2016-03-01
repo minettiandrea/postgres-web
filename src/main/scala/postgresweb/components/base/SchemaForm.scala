@@ -7,6 +7,7 @@ import postgresweb.components.base.form.Input
 import postgresweb.css.CommonStyles
 import postgresweb.models.{JSONSchemaUI, JSONSchema}
 
+import scala.scalajs.js
 import scala.scalajs.js.{Any, UndefOr}
 import scalacss.Defaults._
 import scalacss.ScalaCssReact._
@@ -31,13 +32,13 @@ object SchemaForm {
 
   }
 
-  case class Props(schema:JSONSchema, ui:JSONSchemaUI)
+  case class Props(schema:String, ui:JSONSchemaUI, onSubmit: SchemaFormState => Unit, formData:Option[js.Any] = None)
 
 
   val component = ReactComponentB[Props]("SchemaForm")
     .render_P { P =>
       <.div(CommonStyles.card,
-        SchemaFormNative(P.schema,Some(P.ui))(
+        SchemaFormNative(P.schema,Some(P.ui),onSubmit = Some(P.onSubmit),formData = P.formData)(
           <.div(Style.action,
             <.button(Style.button,^.`type` := "submit","Submit")
           )

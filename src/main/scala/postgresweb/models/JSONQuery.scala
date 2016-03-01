@@ -14,7 +14,7 @@ case class JSONQueryFilter(value:String,operator:Option[String])
 
 object JSONQuery{
   val baseFilter = JSONQuery(
-    count = 10,
+    count = 30,
     page = 1,
     sorting = Map(),
     filter = Map()

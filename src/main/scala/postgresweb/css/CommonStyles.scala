@@ -20,9 +20,19 @@ object CommonStyles extends StyleSheet.Inline {
 
   val title:TagMod = style(addClassNames("mdl-layout-title"))
 
-  val row:TagMod = style(addClassNames("mdl-grid"))
-  val fullWidth:TagMod = style(addClassNames("mdl-cell","mdl-cell--12-col"))
+  val row:TagMod = style(
+    addClassNames("mdl-grid"),
+    margin(0.px),
+    padding(0.px)
+  )
+  val fullWidth:TagMod = style(
+    addClassNames("mdl-cell","mdl-cell--12-col"),
+    margin(0.px),
+    width(100.%%)
+  )
 
   val card:TagMod = style(addClassNames("mdl-card","mdl-shadow--2dp"))
+
+  val scroll:TagMod = style(overflow.auto)
 
 }

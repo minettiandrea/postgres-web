@@ -10,7 +10,7 @@ import scala.scalajs.js
 import scalacss.Defaults._
 import scalacss.ScalaCssReact._
 
-object ItemsPage {
+object WindowComponent {
 
   object Style extends StyleSheet.Inline {
     import dsl._
@@ -21,13 +21,13 @@ object ItemsPage {
   val component = ReactComponentB[Props]("ItemsPage")
     .render_P { P =>
       <.div(CommonStyles.layout,
-        TopNav(TopNav.Props(P.menu,P.selectedPage,P.ctrl)),
+        TopNav(TopNav.Props(P.menu,P.selectedFormContainer,P.ctrl)),
         LeftNav(LeftNav.Props("Tables",P.ctrl)),
         <.main(Style.content,
           <.div(Style.pageContent,
             <.div(CommonStyles.row,
               <.div(CommonStyles.fullWidth,
-                P.selectedPage.render()
+                P.selectedFormContainer.render()
               )
             )
           )
@@ -36,7 +36,7 @@ object ItemsPage {
     }
     .build
 
-  case class Props(menu:Vector[Item],selectedPage : Item,ctrl : RouterCtl[Item])
+  case class Props(menu:Vector[() => FormContainer], selectedFormContainer: FormContainer, ctrl : RouterCtl[FormContainer])
 
   def apply(props : Props,ref: js.UndefOr[String] = "", key: js.Any = {}) = component.set(key, ref)(props)
 

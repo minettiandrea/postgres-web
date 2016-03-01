@@ -20,52 +20,28 @@ import scala.scalajs._
   */
 
 @js.native
-trait UiSchemaProps extends js.Object{
-  def schema:js.Any
-  def value:js.Any
-  def defaultValue:js.Any
-  def required:js.Any
-  def onChange:js.Any
-  def placeholder:js.Any
-  def options:js.Any
+trait SchemaFormState extends js.Object{
+  def formData: js.Any
 }
 
 
-//case class UiFileds(widget:(UiSchemaProps => ReactElement))
-//case class UiSchema(fields:Map[String,UiFileds])
-
-
 case class SchemaFormNative(
-                             schema:JSONSchema,
+                             schema:String,
                              uiSchema:Option[JSONSchemaUI] = None,
                              formData:Option[js.Any] = None,
                              onChange:Option[() => Unit] = None,
                              onError:Option[() => Unit] = None,
-                             onSubmit:Option[() => Unit] = None,
+                             onSubmit:Option[SchemaFormState => Unit] = None,
                              schemaField:Option[() => Unit] = None,
                              titleField:Option[() => Unit] = None
   )  {
 
 
 
-//  def uiSchemaToNative(ui:UiSchema):js.Any = {
-//
-//
-//    def addField(field:UiFileds) = {
-//      val uiField  = js.Dynamic.literal()
-//      uiField.updateDynamic("ui:widget")(field.widget)
-//      //uiField.updateDynamic("ui:widget")("textarea")
-//      uiField
-//    }
-//
-//    val uiSchema  = js.Dynamic.literal()
-//    for((n,f) <- ui.fields) uiSchema.updateDynamic(n)(addField(f))
-//    uiSchema
-//  }
-
    def apply(childs: ReactNode*) = {
+
     val p = js.Dynamic.literal()
-      p.updateDynamic("schema")(schema.asJsAny)
+      p.updateDynamic("schema")(js.JSON.parse(schema)) //fix to avoid undefined fields
       uiSchema.foreach(ui => p.updateDynamic("uiSchema")(ui.asJsAny))
       formData.foreach(fd => p.updateDynamic("formData")(fd))
       onChange.foreach(oc => p.updateDynamic("onChange")(oc))
@@ -73,6 +49,7 @@ case class SchemaFormNative(
       onSubmit.foreach(os => p.updateDynamic("onSubmit")(os))
       schemaField.foreach(sf => p.updateDynamic("SchemaField")(sf))
       titleField.foreach(tf => p.updateDynamic("TitleField")(tf))
+
 
      js.Dynamic.global.console.log(p)
 

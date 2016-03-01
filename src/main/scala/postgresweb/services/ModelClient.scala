@@ -11,6 +11,7 @@ import postgresweb.models._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.scalajs.js
 
 /**
   * Created by andreaminetti on 23/02/16.
@@ -20,13 +21,13 @@ class ModelClient(model:String) {
   val paths = Path.forModel(model)
 
   def list(jsonQuery: JSONQuery) = HttpClient.postJson[JSONResponse](paths.list,jsonQuery.asJson.noSpaces)
-  def schema = HttpClient.get[JSONSchema](paths.schema)
+  def schema = HttpClient.getString(paths.schema)
   def form = HttpClient.get[Vector[JSONField]](paths.form)
   def keys = HttpClient.get[Vector[String]](paths.keys)
   def count = HttpClient.get[JSONCount](paths.count)
-  def get(i:Int) = HttpClient.get[Map[String,String]](paths.get(i))
-  def update(i:Int,data:String) = HttpClient.putJson[String](paths.update(i),data)
-  def insert(data:String) = HttpClient.postJson[String](paths.insert,data)
+  def get(i:String) = HttpClient.getJs(paths.get(i))
+  def update(i:String,data:js.Any) = HttpClient.putJson[String](paths.update(i),data.toString)
+  def insert(data:js.Any) = HttpClient.postJson[String](paths.insert,data.toString)
   def firsts = HttpClient.get[JSONResponse](paths.firsts)
 
   object Helpers {
@@ -63,7 +64,7 @@ class ModelClient(model:String) {
 
 }
 
-object ModelClient{
+object   ModelClient{
   def apply(model:String) = new ModelClient(model)
 
   def models() = HttpClient.get[Vector[String]](Path.models)
