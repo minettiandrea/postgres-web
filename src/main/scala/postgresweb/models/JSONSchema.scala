@@ -11,7 +11,11 @@ case class JSONSchema(
                        readonly: Option[Boolean] = None,
                        enum: Option[Seq[String]] = None,
                        order: Option[Int] = None
-                     )
+                     ) {
+
+  def typeOfTitle:Map[String,String] = properties.map{ case (k,v) => v.title.getOrElse("no Title") -> v.`type` }
+
+}
 
 case class JSONSchemaL2(
                        `type`:String,

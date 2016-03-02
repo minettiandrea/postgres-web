@@ -48,8 +48,12 @@ class ModelClient(model:String) {
 
       for {
         f <- form
+        schema <- schema
         result <- list(filter)
       } yield {
+
+        val jsonSchema = decode[JSONSchema](schema).getOrElse(JSONSchema.empty)
+
         val headers = f.map(_.key)
         val rows =
           result.data.map { row =>
@@ -57,7 +61,7 @@ class ModelClient(model:String) {
               valueForKey(field.key,row)
             }
           }
-        Table(headers,rows)
+        Table(headers,rows,jsonSchema)
       }
     }
   }

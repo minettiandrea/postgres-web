@@ -35,7 +35,7 @@ case class Updates(model:String) {
 
     def onSubmit(s:SchemaFormState):Unit = {
       scala.scalajs.js.Dynamic.global.console.log(s.formData)
-      client.insert(JSON.stringify(s.formData))
+      client.update(GlobalState.selectedId.getOrElse(""),JSON.stringify(s.formData))
     }
 
 

@@ -48,11 +48,30 @@ object TableComponent {
   class Backend(scope:BackendScope[Props,State]) {
 
     def selectRow(headers: Vector[String], row: Vector[String]) = {
-      GlobalState.selectedId = Try{row.head.toInt}.toOption
+      GlobalState.selectedId = row.headOption
       for{
         _ <- Callback.log("Selected row: " + row)
         result <- scope.modState(_.copy(selectedRow = headers.zip(row)))
       } yield result
+    }
+
+    def filterSelect(`type`:String) = `type` match {
+      case "string" => Seq(
+        <.option(^.value := "like","Like"),
+        <.option(^.value := "=","=")
+      )
+      case "number" => Seq(
+        <.option(^.value := "=","="),
+        <.option(^.value := "<","<"),
+        <.option(^.value := ">",">"),
+        <.option(^.value := "not","not")
+      )
+      case _ => {
+        println("Type not found: " + `type`)
+        Seq(
+          <.option(^.value := "=", "=")
+        )
+      }
     }
 
     def render(P:Props,S:State) = {
@@ -69,7 +88,7 @@ object TableComponent {
                 <.input(Style.input),
                 <.span(Style.select,
                   <.select(
-                    <.option("test")
+                    filterSelect(P.table.schema.typeOfTitle(title))
                   )
                 )
               ))
