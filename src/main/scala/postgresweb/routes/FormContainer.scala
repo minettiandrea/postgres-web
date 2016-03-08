@@ -3,6 +3,7 @@ package postgresweb.routes
 import japgolly.scalajs.react.ReactElement
 import japgolly.scalajs.react.extra.router.RouterConfigDsl
 import japgolly.scalajs.react.extra.router.StaticDsl.RouteB
+import postgresweb.components.base.formBuilder.FormBuilderComponent
 import postgresweb.components.items._
 import postgresweb.services.GlobalState
 
@@ -17,6 +18,8 @@ sealed abstract class FormContainer(val title: String,
 object FormContainer {
 
   case object Home extends FormContainer("Home","home","home", () => HomePage())
+
+  case object FormBuilder extends FormContainer("Home","home","home", () => FormBuilderComponent())
 
 
   case class Export(override val model:String) extends FormContainer("Export","export",model, () => Item2Data())
@@ -47,6 +50,7 @@ object FormContainer {
 
 
     ( staticRoute("home",Home) ~> renderR(r => WindowComponent(props = WindowComponent.Props(menu,Home, r)))
+    | staticRoute("formBuilder",FormBuilder) ~> renderR(r => WindowComponent(props = WindowComponent.Props(menu,FormBuilder, r)))
     | dynamicRouteCT(table) ~> dynRenderR{ case(m,r) => WindowComponent(props = WindowComponent.Props(modelMenu(m.model),m, r))}
     | dynamicRouteCT(insert) ~> dynRenderR{ case(m,r) => WindowComponent(props = WindowComponent.Props(modelMenu(m.model),m, r))}
     | dynamicRouteCT(update) ~> dynRenderR{ case(m,r) => WindowComponent(props = WindowComponent.Props(modelMenu(m.model),m, r))}

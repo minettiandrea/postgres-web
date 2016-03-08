@@ -2,7 +2,7 @@ package postgresweb.components.items
 
 import japgolly.scalajs.react.vdom.prefix_<^._
 import japgolly.scalajs.react.{ReactComponentB, _}
-import postgresweb.components.base.{SchemaFormState, TableComponent, SchemaForm}
+import postgresweb.components.base.{SchemaFormState, SchemaForm}
 import postgresweb.css.CommonStyles
 import postgresweb.models._
 import postgresweb.services.{GlobalState, ModelClient}

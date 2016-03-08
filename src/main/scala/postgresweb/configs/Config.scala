@@ -13,6 +13,6 @@ object Config {
 
   val endpoint = "http://localhost:8080/"
 
-  val auth =  ("Authorization" -> basicAuthToken("bob","123"))
+  val auth =  ("Authorization" -> basicAuthToken("andreaminetti",""))
 
 }

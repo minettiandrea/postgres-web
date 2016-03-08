@@ -2,7 +2,7 @@ package postgresweb.components.items
 
 import japgolly.scalajs.react.vdom.prefix_<^._
 import japgolly.scalajs.react.{ReactComponentB, _}
-import postgresweb.components.base.{SchemaFormState, TableComponent, SchemaForm}
+import postgresweb.components.base.{SchemaFormState, SchemaForm}
 import postgresweb.css.CommonStyles
 import postgresweb.models._
 import postgresweb.services.ModelClient
@@ -18,10 +18,7 @@ case class Inserts(model:String) {
 
   class Backend(scope:BackendScope[Unit,State]) {
 
-
-
     val client = ModelClient(model)
-
 
     for{
       schema <- client.schema
@@ -35,13 +32,12 @@ case class Inserts(model:String) {
       client.insert(s.formData)
     }
 
-
-
     def render(s:State) = {
       <.div(CommonStyles.row,
         <.div(CommonStyles.fullWidth,SchemaForm(SchemaForm.Props(s.schema,s.ui,onSubmit)))
       )
     }
+
   }
 
 
